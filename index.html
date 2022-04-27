@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    
+    <header id="form">
+        
+        <form id = "form">
+            <input type="text" id="input" placeholder="Search" class="input">
+        </form>
+        
+        <ul class="navbar" id = "navbar">
+            <li><a href="">HOME</a></li>
+            <li><a href="random.html">MOVIE RANDOMIZER</a></li>
+          </ul>
+          <button class="button" id="button"></button>
+          <div class="hamburger">
+            <div id="hb"></div>
+            <div id="hb"></div>
+            <div id="hb"></div>
+        </div>
+    </header>
+    <main id="main">
+
+    </main>
+    <script>
+        const key = 'api_key=981e5d0b6fcb954be964dee88f60d3e5'
+        const url = 'https://api.themoviedb.org/3'
+        const api_url = url + '/discover/movie?sort_by=popularity.desc&' + key
+        const img_url = 'https://image.tmdb.org/t/p/w500'
+        const main = document.getElementById('main')
+        const form = document.getElementById('form')
+        const input = document.getElementById('input')
+        const search = url + '/search/movie?' + key
+
+        function get(url){
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    
+                    showmovies(data.results)
+            })}
+        function showmovies(data)
+        {
+            main.innerHTML = ''
+            data.forEach
+                (mov => {
+                    const {title, poster_path, vote_average, overview} = mov;
+                    const movie = document.createElement('div')
+                        movie.classList.add('movie')
+                        movie.innerHTML= `
+                            <img class = "image" src="${img_url + poster_path}">
+                            <div class = "info">
+                                <h3>${title}</h3>
+                                <span class="imdb">${vote_average}</span>
+                                <div class="desc">
+                                    ${overview}
+                                </div>
+                            </div>
+                                 `
+                    
+                        main.appendChild(movie)
+                    }
+                )
+        }
+    get(api_url)
+    form.addEventListener('submit',(e) => {
+        e.preventDefault();
+        let keyword = input.value
+        if(keyword)
+        {
+            get(search+ '&query=' + keyword)
+        }
+        
+    })
+
+    let clicked = false
+    let button = document.getElementById('button')
+    let navbar = document.getElementById('navbar')
+    button.addEventListener('click',function()
+    {
+        if (!clicked)
+        {
+            clicked = true
+            navbar.classList.add('page')
+            
+        }
+        else{
+            clicked = false
+            navbar.classList.remove('page')
+
+        }
+        console.log(clicked)
+    })
+            
+    </script>
+</body>
+</html>

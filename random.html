@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles1.css">
+</head>
+    <header id="header1">
+        <ul class="navbar1" id = "navbar2">
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="">MOVIE RANDOMIZER</a></li>
+        </ul>
+    </header>
+    <body id="body">
+        <button id="btn">RANDOMIZE</button>
+        <main id="main">
+
+        </main>
+    </body>
+    <script>
+         const img_url = 'https://image.tmdb.org/t/p/w500'
+         const movie1 = document.createElement('div')
+         const main = document.getElementById('main')
+         let all_movies = 'https://api.themoviedb.org/3/movie/top_rated?api_key=981e5d0b6fcb954be964dee88f60d3e5&language=en-US&page='
+         function random(url)
+        {
+            let random = Math.floor(Math.random()*444)
+            console.log(random)
+            all_movies = 'https://api.themoviedb.org/3/movie/top_rated?api_key=981e5d0b6fcb954be964dee88f60d3e5&language=en-US&page='
+            all_movies += random
+           
+            fetch(url)
+                .then(response => response.json())
+                .then(data =>
+                {
+                        show(data.results)
+                })
+                
+        }
+        function show(data)
+        {
+            const values = Object.values(data)
+            const Value = values[parseInt(Math.random() * values.length)]
+            movie1.innerHTML = `
+                            <img class = "image" src="${img_url + Value.poster_path}">
+                            <div class = "info">
+                                <h3>${Value.title}</h3>
+                                <span class="imdb">${Value.vote_average}</span>
+                                <div class="desc">
+                                    ${Value.overview}
+                                </div>
+                            </div>
+                                 `
+            movie1.classList.add('movie')
+            main.appendChild(movie1)
+                                 
+        }
+        let btn = document.getElementById('btn')
+        btn.addEventListener('click',function()
+        {
+            random(all_movies)
+        })
+    </script>
+    
+</body>
+</html>
